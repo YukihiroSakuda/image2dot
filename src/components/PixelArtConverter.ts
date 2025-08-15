@@ -155,9 +155,17 @@ export class PixelArtConverter {
             if (converged) break;
         }
         
-        return centroids.filter(centroid => 
-            centroid.r !== undefined && centroid.g !== undefined && centroid.b !== undefined
+        // 有効な重心のみを返す
+        const validCentroids = centroids.filter(centroid => 
+            centroid && 
+            typeof centroid.r === 'number' && 
+            typeof centroid.g === 'number' && 
+            typeof centroid.b === 'number' &&
+            !isNaN(centroid.r) && !isNaN(centroid.g) && !isNaN(centroid.b)
         );
+        
+        console.log(`K-means完了: ${validCentroids.length}個の有効な重心`);
+        return validCentroids;
     }
     
     // 初期重心を選択
@@ -219,16 +227,23 @@ export class PixelArtConverter {
     averageColors(colors: Array<{r: number, g: number, b: number}>): {r: number, g: number, b: number} {
         if (colors.length === 0) return { r: 0, g: 0, b: 0 };
         
-        const sum = colors.reduce((acc, color) => ({
+        // 有効な色のみを使用
+        const validColors = colors.filter(color => 
+            color && typeof color.r === 'number' && typeof color.g === 'number' && typeof color.b === 'number'
+        );
+        
+        if (validColors.length === 0) return { r: 0, g: 0, b: 0 };
+        
+        const sum = validColors.reduce((acc, color) => ({
             r: acc.r + color.r,
             g: acc.g + color.g,
             b: acc.b + color.b
         }), { r: 0, g: 0, b: 0 });
         
         return {
-            r: Math.round(sum.r / colors.length),
-            g: Math.round(sum.g / colors.length),
-            b: Math.round(sum.b / colors.length)
+            r: Math.max(0, Math.min(255, Math.round(sum.r / validColors.length))),
+            g: Math.max(0, Math.min(255, Math.round(sum.g / validColors.length))),
+            b: Math.max(0, Math.min(255, Math.round(sum.b / validColors.length)))
         };
     }
     
@@ -240,15 +255,25 @@ export class PixelArtConverter {
     ): Uint8ClampedArray {
         const remapped = new Uint8ClampedArray(pixelData.length);
         
+        // 削減色が空の場合は元のデータを返す
+        if (reducedColors.length === 0) {
+            console.warn('削減色が空のため、元のピクセルデータを返します');
+            return pixelData;
+        }
+        
         // 各元色に対応する削減後の色のマッピングを作成
         const colorMap = new Map<string, {r: number, g: number, b: number}>();
         
         for (const originalColor of originalColors) {
+            if (!originalColor || typeof originalColor.r !== 'number') continue;
+            
             // 最も近い削減後の色を見つける
             let minDistance = Infinity;
             let closestColor = reducedColors[0];
             
             for (const reducedColor of reducedColors) {
+                if (!reducedColor || typeof reducedColor.r !== 'number') continue;
+                
                 const distance = this.calculateColorDistance(originalColor, reducedColor);
                 if (distance < minDistance) {
                     minDistance = distance;
@@ -270,9 +295,10 @@ export class PixelArtConverter {
             const colorKey = `${r},${g},${b}`;
             const mappedColor = colorMap.get(colorKey) || { r, g, b };
             
-            remapped[i] = mappedColor.r;
-            remapped[i + 1] = mappedColor.g;
-            remapped[i + 2] = mappedColor.b;
+            // 有効な色であることを確認
+            remapped[i] = Math.max(0, Math.min(255, Math.round(mappedColor.r || 0)));
+            remapped[i + 1] = Math.max(0, Math.min(255, Math.round(mappedColor.g || 0)));
+            remapped[i + 2] = Math.max(0, Math.min(255, Math.round(mappedColor.b || 0)));
             remapped[i + 3] = a;
         }
         

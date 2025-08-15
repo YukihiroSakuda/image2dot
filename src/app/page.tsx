@@ -295,7 +295,16 @@ export default function Home() {
   }, []);
 
   const formatColor = (color: {r: number, g: number, b: number}, format: 'hex' | 'rgb' | 'hsl') => {
-    const { r, g, b } = color;
+    // 色オブジェクトの検証
+    if (!color || typeof color.r !== 'number' || typeof color.g !== 'number' || typeof color.b !== 'number') {
+      console.error('Invalid color object:', color);
+      return '#000000'; // デフォルト値を返す
+    }
+    
+    // 値を0-255の範囲に制限
+    const r = Math.max(0, Math.min(255, Math.round(color.r)));
+    const g = Math.max(0, Math.min(255, Math.round(color.g)));
+    const b = Math.max(0, Math.min(255, Math.round(color.b)));
     
     switch (format) {
         case 'hex':
@@ -303,8 +312,13 @@ export default function Home() {
         case 'rgb':
             return `rgb(${r}, ${g}, ${b})`;
         case 'hsl':
-            const [h, s, l] = converter.rgbToHsl(r, g, b);
-            return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
+            try {
+              const [h, s, l] = converter.rgbToHsl(r, g, b);
+              return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
+            } catch (error) {
+              console.error('Error converting to HSL:', error);
+              return `rgb(${r}, ${g}, ${b})`;
+            }
         default:
             return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
@@ -561,7 +575,7 @@ export default function Home() {
                         </div>
                         
                         <div className="grid grid-cols-1 gap-2.5 flex-1 overflow-y-auto max-h-[450px] pr-1.5">
-                          {extractedColors.map((color, index) => (
+                          {extractedColors.filter(color => color && typeof color.r === 'number').map((color, index) => (
                             <div
                               key={index}
                               className="color-item flex items-center gap-2.5 p-2 border-2 border-black rounded-md bg-white/95 text-xs font-semibold shadow-[3px_3px_0px_#000000] transition-all duration-200 cursor-pointer min-h-[40px] hover:transform hover:-translate-y-0.5 hover:shadow-[3px_4px_0px_#000000]"
@@ -569,7 +583,7 @@ export default function Home() {
                             >
                               <div 
                                 className="w-6 h-6 border-2 border-black rounded-sm flex-shrink-0"
-                                style={{ backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})` }}
+                                style={{ backgroundColor: `rgb(${Math.round(color.r)}, ${Math.round(color.g)}, ${Math.round(color.b)})` }}
                               ></div>
                               <span className="font-mono">{formatColor(color, currentColorFormat)}</span>
                             </div>
