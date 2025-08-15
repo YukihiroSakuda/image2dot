@@ -332,7 +332,9 @@ export default function Home() {
         <header className="text-center mb-12 p-8 border-b-[3px] border-black bg-white/95 rounded-xl shadow-[8px_8px_0px_#000000]">
           <h1 className="text-black text-4xl font-bold flex items-center justify-center gap-4 uppercase tracking-wider">
             <ImageIcon className="w-12 h-12 text-red-600" />
-            <ruby>画像<rt className="text-xs text-gray-600 font-medium">がぞう</rt></ruby>を<ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>に<ruby>変<rt className="text-xs text-gray-600 font-medium">か</rt></ruby>える
+            <span className="flex items-baseline min-h-[1.2em]">
+              <ruby>画像<rt className="text-xs text-gray-600 font-medium">がぞう</rt></ruby>を<ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>に<ruby>変<rt className="text-xs text-gray-600 font-medium">か</rt></ruby>える
+            </span>
             <Sparkles className="w-12 h-12 text-red-600" />
           </h1>
         </header>
@@ -346,7 +348,7 @@ export default function Home() {
               <span className="bg-black text-white w-15 h-15 rounded-full flex items-center justify-center text-2xl font-bold mr-5 border-[3px] border-white shadow-[0_0_0_3px_#000000]">
                 1
               </span>
-              <h2 className="text-black text-2xl font-semibold">
+              <h2 className="text-black text-2xl font-semibold flex items-baseline min-h-[1.2em]">
                 <ruby>画像<rt className="text-xs text-gray-600 font-medium">がぞう</rt></ruby>を<ruby>選<rt className="text-xs text-gray-600 font-medium">えら</rt></ruby>んでね！
               </h2>
             </div>
@@ -391,7 +393,7 @@ export default function Home() {
                 <span className="bg-black text-white w-15 h-15 rounded-full flex items-center justify-center text-2xl font-bold mr-5 border-[3px] border-white shadow-[0_0_0_3px_#000000]">
                   2
                 </span>
-                <h2 className="text-black text-2xl font-semibold">
+                <h2 className="text-black text-2xl font-semibold flex items-baseline min-h-[1.2em]">
                   <ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>の<ruby>大<rt className="text-xs text-gray-600 font-medium">おお</rt></ruby>きさを<ruby>選<rt className="text-xs text-gray-600 font-medium">えら</rt></ruby>んでね！
                 </h2>
               </div>
@@ -428,7 +430,7 @@ export default function Home() {
                 <span className="bg-black text-white w-15 h-15 rounded-full flex items-center justify-center text-2xl font-bold mr-5 border-[3px] border-white shadow-[0_0_0_3px_#000000]">
                   3
                 </span>
-                <h2 className="text-black text-2xl font-semibold">
+                <h2 className="text-black text-2xl font-semibold flex items-baseline min-h-[1.2em]">
                   <ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>を<ruby>作<rt className="text-xs text-gray-600 font-medium">つく</rt></ruby>る！
                 </h2>
               </div>
@@ -440,7 +442,9 @@ export default function Home() {
                   disabled={isLoading}
                 >
                   <Wand2 className="w-7 h-7" />
-                  <ruby>ドット絵<rt className="text-xs text-red-200 font-medium">どっとえ</rt></ruby>に<ruby>変<rt className="text-xs text-red-200 font-medium">か</rt></ruby>える！
+                  <span className="flex items-baseline min-h-[1.5em]">
+                    <ruby>ドット絵<rt className="text-xs text-red-200 font-medium">どっとえ</rt></ruby>に<ruby>変<rt className="text-xs text-red-200 font-medium">か</rt></ruby>える！
+                  </span>
                 </button>
                 
                 {isLoading && (
@@ -464,12 +468,12 @@ export default function Home() {
                 <span className="bg-black text-white w-15 h-15 rounded-full flex items-center justify-center text-2xl font-bold mr-5 border-[3px] border-white shadow-[0_0_0_3px_#000000]">
                   4
                 </span>
-                <h2 className="text-black text-2xl font-semibold">できあがり！</h2>
+                <h2 className="text-black text-2xl font-semibold flex items-baseline min-h-[1.2em]">できあがり！</h2>
               </div>
               
               <div className="text-center">
                 <div className="mb-8">
-                  <h3 className="text-black mb-6 text-xl font-semibold">
+                  <h3 className="text-black mb-6 text-xl font-semibold flex items-baseline justify-center min-h-[1.2em]">
                     <ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>の<ruby>完成<rt className="text-xs text-gray-600 font-medium">かんせい</rt></ruby>！
                   </h3>
                   
@@ -479,7 +483,9 @@ export default function Home() {
                       onClick={() => setIsFullscreen(true)}
                     >
                       <Maximize className="w-5 h-5" />
-                      <ruby>大<rt className="text-xs text-gray-600 font-medium">おお</rt></ruby>きく<ruby>見<rt className="text-xs text-gray-600 font-medium">み</rt></ruby>る
+                      <span className="flex items-baseline min-h-[1.2em]">
+                        <ruby>大<rt className="text-xs text-gray-600 font-medium">おお</rt></ruby>きく<ruby>見<rt className="text-xs text-gray-600 font-medium">み</rt></ruby>る
+                      </span>
                     </button>
                   </div>
                   
@@ -493,13 +499,13 @@ export default function Home() {
                     
                     {extractedColors.length > 0 && (
                       <div className="p-5 border-[3px] border-black rounded-xl bg-white/95 shadow-[8px_8px_0px_#000000] flex-1 min-w-[280px] h-fit">
-                        <h4 className="mb-4 text-lg font-semibold text-black text-center">
+                        <h4 className="mb-4 text-lg font-semibold text-black text-center flex items-baseline justify-center min-h-[1.2em]">
                           <ruby>使<rt className="text-xs text-gray-600 font-medium">つか</rt></ruby>われている<ruby>色<rt className="text-xs text-gray-600 font-medium">いろ</rt></ruby>
                         </h4>
                         
                         {selectedPixelColor && (
                           <div className="mb-4 p-3 border-2 border-black rounded-lg bg-yellow-100">
-                            <h5 className="text-sm font-semibold mb-2 text-center">
+                            <h5 className="text-sm font-semibold mb-2 text-center flex items-baseline justify-center min-h-[1.1em]">
                               <ruby>選択<rt className="text-xs text-gray-600 font-medium">せんたく</rt></ruby>した<ruby>色<rt className="text-xs text-gray-600 font-medium">いろ</rt></ruby>
                             </h5>
                             <div className="flex items-center gap-2 justify-center">
@@ -554,7 +560,9 @@ export default function Home() {
                     onClick={downloadPixelArt}
                   >
                     <Download className="w-7 h-7" />
-                    <ruby>ドット絵<rt className="text-xs text-blue-200 font-medium">どっとえ</rt></ruby>を<ruby>保存<rt className="text-xs text-blue-200 font-medium">ほぞん</rt></ruby>する
+                    <span className="flex items-baseline min-h-[1.5em]">
+                      <ruby>ドット絵<rt className="text-xs text-blue-200 font-medium">どっとえ</rt></ruby>を<ruby>保存<rt className="text-xs text-blue-200 font-medium">ほぞん</rt></ruby>する
+                    </span>
                   </button>
                   
                   <button
@@ -562,7 +570,9 @@ export default function Home() {
                     onClick={resetApp}
                   >
                     <RotateCcw className="w-7 h-7" />
-                    もう<ruby>一度作<rt className="text-xs text-yellow-800 font-medium">いちどつく</rt></ruby>る
+                    <span className="flex items-baseline min-h-[1.5em]">
+                      もう<ruby>一度作<rt className="text-xs text-yellow-800 font-medium">いちどつく</rt></ruby>る
+                    </span>
                   </button>
                 </div>
               </div>
@@ -575,7 +585,7 @@ export default function Home() {
       {isFullscreen && (
         <div className="fixed inset-0 bg-black/95 z-50 flex flex-col">
           <div className="flex justify-between items-center p-6 bg-white/95 border-b-[3px] border-black">
-            <h3 className="text-black text-xl font-semibold">
+            <h3 className="text-black text-xl font-semibold flex items-baseline min-h-[1.2em]">
               <ruby>ドット絵<rt className="text-xs text-gray-600 font-medium">どっとえ</rt></ruby>を<ruby>大<rt className="text-xs text-gray-600 font-medium">おお</rt></ruby>きく<ruby>見<rt className="text-xs text-gray-600 font-medium">み</rt></ruby>る
             </h3>
             <button
@@ -599,7 +609,7 @@ export default function Home() {
             
             {selectedPixelColor && (
               <div className="flex-1 bg-white/95 border-[3px] border-black rounded-xl p-8 shadow-[8px_8px_0px_rgba(255,255,255,0.3)]">
-                <h4 className="text-black text-xl font-semibold mb-6 text-center">
+                <h4 className="text-black text-xl font-semibold mb-6 text-center flex items-baseline justify-center min-h-[1.2em]">
                   <ruby>選択<rt className="text-xs text-gray-600 font-medium">せんたく</rt></ruby>した<ruby>色<rt className="text-xs text-gray-600 font-medium">いろ</rt></ruby>
                 </h4>
                 
