@@ -16,6 +16,7 @@ export default function Home() {
   const [extractedColors, setExtractedColors] = useState<Array<{r: number, g: number, b: number}>>([]);
   const [currentColorFormat, setCurrentColorFormat] = useState<'hex' | 'rgb' | 'hsl'>('hex');
   const [selectedPixelColor, setSelectedPixelColor] = useState<{r: number, g: number, b: number} | null>(null);
+  const [colorReductionLevel, setColorReductionLevel] = useState<'low' | 'medium' | 'high'>('medium');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadAreaRef = useRef<HTMLDivElement>(null);
@@ -73,7 +74,7 @@ export default function Home() {
 
     // 少し遅延を入れてユーザーに処理感を与える
     setTimeout(() => {
-      const result = converter.processPixelConversion(originalImage, selectedSize);
+      const result = converter.processPixelConversion(originalImage, selectedSize, colorReductionLevel);
       setPixelData(result.pixelData);
       setExtractedColors(result.extractedColors);
       setIsLoading(false);
@@ -87,7 +88,7 @@ export default function Home() {
         });
       }, 300);
     }, 1500);
-  }, [originalImage, selectedSize, converter]);
+  }, [originalImage, selectedSize, colorReductionLevel, converter]);
 
   // キャンバスを描画
   useEffect(() => {
@@ -398,7 +399,7 @@ export default function Home() {
                 </h2>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 max-w-4xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 max-w-4xl mx-auto mb-8">
                 {[
                   { size: 8, label: 'とても小さい (8×8)' },
                   { size: 16, label: '小さい (16×16)' },
@@ -417,6 +418,31 @@ export default function Home() {
                     <span>{label}</span>
                   </button>
                 ))}
+              </div>
+              
+              {/* 色数削減設定 */}
+              <div className="mt-8">
+                <h3 className="text-black text-lg font-semibold mb-4 text-center flex items-baseline justify-center min-h-[1.2em]">
+                  <ruby>色数<rt className="text-xs text-gray-600 font-medium">いろすう</rt></ruby>の<ruby>調整<rt className="text-xs text-gray-600 font-medium">ちょうせい</rt></ruby>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                  {[
+                    { level: 'low' as const, label: '色数多め', description: '詳細な色合い', bgColor: 'bg-green-500' },
+                    { level: 'medium' as const, label: 'バランス', description: 'ドット絵らしく', bgColor: 'bg-yellow-500' },
+                    { level: 'high' as const, label: '色数少なめ', description: 'シンプルに', bgColor: 'bg-red-500' }
+                  ].map(({ level, label, description, bgColor }) => (
+                    <button
+                      key={level}
+                      className={`border-[3px] border-black rounded-xl p-4 cursor-pointer transition-all duration-300 text-center text-sm text-black font-semibold relative overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-[8px_12px_0px_#000000] ${
+                        colorReductionLevel === level ? `${bgColor} shadow-[8px_8px_0px_#000000] transform -translate-y-1` : 'bg-white/95'
+                      }`}
+                      onClick={() => setColorReductionLevel(level)}
+                    >
+                      <div className="mb-2 font-bold">{label}</div>
+                      <div className="text-xs opacity-80">{description}</div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -500,7 +526,7 @@ export default function Home() {
                     {extractedColors.length > 0 && (
                       <div className="p-5 border-[3px] border-black rounded-xl bg-white/95 shadow-[8px_8px_0px_#000000] flex-1 min-w-[280px] h-fit">
                         <h4 className="mb-4 text-lg font-semibold text-black text-center flex items-baseline justify-center min-h-[1.2em]">
-                          <ruby>使<rt className="text-xs text-gray-600 font-medium">つか</rt></ruby>われている<ruby>色<rt className="text-xs text-gray-600 font-medium">いろ</rt></ruby>
+                          <ruby>使<rt className="text-xs text-gray-600 font-medium">つか</rt></ruby>われている<ruby>色<rt className="text-xs text-gray-600 font-medium">いろ</rt></ruby> ({extractedColors.length}色)
                         </h4>
                         
                         {selectedPixelColor && (
